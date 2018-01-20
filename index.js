@@ -3,22 +3,29 @@ console.log('game studio!');
 let api = require('./lib/api.js'),
 _ = require('lodash');
 
-api.copyClient(hexo).then(function () {
-
-    console.log('Copyed over client system files.');
-
-}).catch (function (e) {
-
-    console.log(e);
-
-});
-
 // gen game pages
 hexo.extend.generator.register('game-run-pages', function (locals) {
 
-    return api.getGamesListArray(hexo).then(function (list) {
+    // start by copying over the client folder to /js in public
+    return api.copyClient(hexo).then(function () {
+
+        console.log('Copyed over client system files.');
+
+        // copy over the games
+        return api.copyGames(hexo);
+
+    }).then(function () {
+
+        // get the list of names to build the paths
+        return api.getGamesListArray(hexo);
+
+    }).then(function (list) {
+
+        // build paths
 
         let pages = [];
+
+        console.log('Building array of objects for game paths...');
 
         // for each page
         list.forEach(function (games, i) {
