@@ -101,16 +101,13 @@ hexo.extend.generator.register('game-studio-index', function (locals) {
 
     });
 
-    /*
-    return [{
-    path: 'games/index.html',
-    data: 'foo'
-    }, {
-    path: 'games/page1.html',
-    data: 'bar'
-    }
+});
 
-    ];
-     */
+// inject all scripts that are to be used when making a theme
+hexo.extend.helper.register('gameScripts', function (page) {
+
+    return '<script src="/js/phaser/2.8.8/phaser.min.js"></script>' +
+    '<script src="/js/angular/1.6.7/angular.min.js"></script>' +
+    '<script src="/games/' + page.game.name + '/index.js"></script>';
 
 });
